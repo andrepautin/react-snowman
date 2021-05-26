@@ -28,7 +28,7 @@ function Snowman(props) {
 
   const [nWrong, setNWrong] = useState(0);
   const [guessed, setGuessed] = useState(new Set());
-  const [answer, setAnswer] = useState((props.words)[0]);
+  const [answer, setAnswer] = useState((props.words)[0]); // could make to pick random word from list
 
   /** guessedWord: show current-state of word:
    if guessed letters are {a,p,e}, show "app_e" for "apple"
@@ -72,9 +72,11 @@ function Snowman(props) {
   /** render: render game */
   return (
       <div className="Snowman">
-        <img src={(props.images)[nWrong]} alt={nWrong} />
+        {props.maxWrong > nWrong && <img src={(props.images)[nWrong]} alt={nWrong} />}
+        {props.maxWrong <= nWrong && <p>You lose!</p>}
         <p className="Snowman-word">{guessedWord()}</p>
         <p>{generateButtons()}</p>
+        <p>Wrong Guesses: {nWrong}</p>
       </div>
   );
 }
