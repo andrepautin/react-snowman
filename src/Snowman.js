@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { randomWord, ENGLISH_WORDS } from "./words"
 
 import "./Snowman.css";
 import img0 from "./0.png";
@@ -35,8 +36,8 @@ function Snowman(props) {
    */
   function guessedWord() {
     return answer
-        .split("")
-        .map(ltr => (guessed.has(ltr) ? ltr : "_"));
+      .split("")
+      .map(ltr => (guessed.has(ltr) ? ltr : "_"));
   }
 
   /** handleGuess: handle a guessed letter:
@@ -44,6 +45,7 @@ function Snowman(props) {
    - if not in answer, increase number-wrong guesses
    */
   function handleGuess(evt) {
+    console.log("ANSWER--->", answer);
     let ltr = evt.target.value;
 
     setGuessed(g => {
@@ -58,33 +60,36 @@ function Snowman(props) {
   /** generateButtons: return array of letter buttons to render */
   function generateButtons() {
     return "abcdefghijklmnopqrstuvwxyz".split("").map(ltr => (
-        <button
-            key={ltr}
-            value={ltr}
-            onClick={handleGuess}
-            disabled={guessed.has(ltr)}
-        >
-          {ltr}
-        </button>
+      <button
+        key={ltr}
+        value={ltr}
+        onClick={handleGuess}
+        disabled={guessed.has(ltr)}
+      >
+        {ltr}
+      </button>
     ));
   }
 
   /** render: render game */
   return (
-      <div className="Snowman">
-        {props.maxWrong > nWrong && <img src={(props.images)[nWrong]} alt={nWrong} />}
-        {props.maxWrong <= nWrong && <p>You lose!</p>}
-        <p className="Snowman-word">{guessedWord()}</p>
-        {props.maxWrong > nWrong && <p>{generateButtons()}</p>}
-        <p>Wrong Guesses: {nWrong}</p>
-      </div>
+    <div className="Snowman">
+      {props.maxWrong > nWrong && <img src={(props.images)[nWrong]} alt={nWrong} />}
+      {
+        props.maxWrong <= nWrong &&
+        <p className="Snowman-lose">You lose! Word was: {answer}</p>
+      }
+      <p className="Snowman-word">{guessedWord()}</p>
+      {props.maxWrong > nWrong && <p>{generateButtons()}</p>}
+      <p>Wrong Guesses: {nWrong}</p>
+    </div>
   );
 }
 
 Snowman.defaultProps = {
   maxWrong: 6,
   images: [img0, img1, img2, img3, img4, img5, img6],
-  words: ["apple"],
+  words: [randomWord(ENGLISH_WORDS)],
 };
 
 

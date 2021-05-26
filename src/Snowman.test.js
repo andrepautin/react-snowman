@@ -4,8 +4,15 @@ import Snowman from "./Snowman";
 
 test("should display message 'You lose' after max wrong guesses", function () {
   const {container} = render(<Snowman maxWrong={1} word={["apple"]}/>);
-  // TODO: test not working--> incorrect query?
-  fireEvent.click(container.querySelectorAll('button[value="z"]'));
+  expect(container.querySelector(".Snowman-lose")).not.toBeInTheDocument();
 
-  expect(container.querySelector('.Snowman')).toContainHTML("You lose");
+  fireEvent.click(container.querySelector('button[value="z"]'));
+
+  expect(container.querySelector(".Snowman-lose")).toBeInTheDocument();
+});
+
+test("watches snapshot", function () {
+  const {container} = render(<Snowman maxWrong={1} word={["apple"]}/>);
+
+  expect(container).toMatchSnapshot();
 });
